@@ -14,8 +14,8 @@ dev.off()
 x11(width = 5, height = 5)
 
 # import data.
-temp <- read.csv("lepidops_temp_cors.csv")
-precip <- read.csv("lepidops_precip_cors.csv")
+temp <- read.csv("lepidops_temp_dev_cors.csv")
+precip <- read.csv("lepidops_precip_dev_cors.csv")
 
 variable <- c(
         "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", 
@@ -40,7 +40,7 @@ table <- data.frame(
 table$Month <- as.factor(table$Month)
 
 ggplot(table, aes(x = Month, y = Cors, ymin = LowerCI, ymax = UpperCI, col = Variable)) +
-    geom_point(size = 3, pch = c(20,20,20,20,19,20,19,20,20,20,20,19,19,20,20,20)) +
+    geom_point(size = 3, pch = c(20,20,20,20,19,20,19,20,20,20,20,19,20,20,20,20)) +
     geom_errorbar(width = 0.2, lwd = 1.1, lty = c(1,1,5,1,1,5,1,1,5,5,5,1,1,5,5,5)) +
     geom_hline(yintercept = 0, lty = 2) +
     scale_color_manual(values = c("#827f32", "#94251c")) +

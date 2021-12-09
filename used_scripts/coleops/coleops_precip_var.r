@@ -102,14 +102,19 @@ c25 <- c(
   "darkorange4", "brown"
 )
 
-ggplot(data_test, aes(x = precip_deviation, y = Count, col = Year)) +
-    geom_point() +
+data_test$Family <- data_test$family
+# New facet label names 
+labs <- c("April", "May", "June", "July", "August", "September", "October", "November")
+names(labs) <- c(4, 5, 6, 7, 8, 9, 10, 11)
+
+ggplot(data_test, aes(x = precip_deviation, y = Count, col = Family)) +
+    geom_point(size = 1.2) +
     #geom_point(shape = 1) +
     theme_bw() +
     scale_color_manual(values = c25) +
     theme(
         legend.position = "top",
-        legend.text = element_text(size = 18, face = "bold", family = "Times New Roman"),
+        legend.text = element_text(size = 14, face = "bold", family = "Times New Roman"),
         panel.grid = element_blank(),
         axis.title.y = element_text(
             size = 18, face = "bold",
@@ -117,7 +122,7 @@ ggplot(data_test, aes(x = precip_deviation, y = Count, col = Year)) +
         ),
         axis.text.y = element_text(size = 18, family = "Times New Roman"),
         axis.text.x = element_text(
-            size = 18, face = "bold",
+            size = 18, face = "bold", angle = 90,
             family = "Times New Roman"
         ),
         title = element_text(
@@ -125,13 +130,7 @@ ggplot(data_test, aes(x = precip_deviation, y = Count, col = Year)) +
             family = "Times New Roman"
         )
     ) +
-    ylim(0, 50) +
     xlab("Deviation from Average Monthly Precipitation (%)") +
     ylab("Insect Count (# individuals)") +
-    ggtitle("E. Insect Counts vs Precipitation Deviation (1992-2009) for 10 Coleopteran Families") +
-    facet_wrap(~ factor(family, levels = c(
-        "CARABIDAE", "STAPHYLINIDAE", "TENEBRIONIDAE",
-        "COCCINELLIDAE", "HYDROPHILIDAE", "CANTHARIDAE",
-        "CRYPTOPHAGIDAE", "MELYRIDAE",
-        "SCARABAEIDAE", "HETEROCERIDAE"
-    )))
+    ggtitle("B. Insect Counts vs Precipitation Deviation (1992-2009) for 10 Coleopteran Families") +
+    facet_grid(~ factor(Month, labels = labs))

@@ -91,8 +91,8 @@ x <- 2
 while (i <= 11) {
     data_table <- table%>%
         filter(Month == i)
-    cor <- cor(data_table$avg_monthly_count, data_table$precip, method = c("kendall"))
-    cor_p <- cor.test(data_table$avg_monthly_count, data_table$precip, method = c("kendall"))$p.value
+    cor <- cor(data_table$avg_monthly_count, data_table$precip_dev, method = c("kendall"))
+    cor_p <- cor.test(data_table$avg_monthly_count, data_table$precip_dev, method = c("kendall"))$p.value
 
     # calculate the sample size
     n <- length(data_table$precip)
@@ -104,7 +104,7 @@ while (i <= 11) {
 
     for (a in 1:B){
         index <- sample(1:n, replace=T)
-        boot_precip <- data_table$precip[index]
+        boot_precip <- data_table$precip_dev[index]
         boot_count <- data_table$avg_monthly_count[index]
         boot.cor <- cor(boot_precip, boot_count, method = c("kendall"))
         boot.cor.all <- c(boot.cor.all, boot.cor)
@@ -115,39 +115,6 @@ while (i <= 11) {
 
     stat_table[x] <- c(i, cor, cor_p, lower, upper)
 
-    i <- i + 1
-    x <- x + 1
-}
-
-stat_table2 <- data.frame(stats = c("year", "precip_dev_cor", "precip_dev_cor_p", "lowerCI", "upperCI"))
-i <- 1992
-x <- 2
-while (i <= 2009) {
-    data_table <- table%>%
-        filter(Year == i)
-    cor <- cor(data_table$avg_monthly_count, data_table$precip_dev, method = c("kendall"))
-    cor_p <- cor.test(data_table$avg_monthly_count, data_table$precip_dev, method = c("kendall"))$p.value
-
-    # calculate the sample size
-    n <- length(data_table$precip_dev)
-
-    # Bootstrap for 1000 times
-
-    B <- 1000
-    boot.cor.all <- c()
-
-    for (a in 1:B){
-        index <- sample(1:n, replace=T)
-        boot_precip_dev <- data_table$precip_dev[index]
-        boot_count_dev <- data_table$avg_monthly_count[index]
-        boot.cor <- cor(boot_precip_dev, boot_count_dev, method = c("kendall"))
-        boot.cor.all <- c(boot.cor.all, boot.cor)
-    }
-    # percentile bootstrap 95CI
-    lower = quantile(boot.cor.all, prob = c(0.025, 0.975), na.rm = T)[1]
-    upper = quantile(boot.cor.all, prob = c(0.025, 0.975), na.rm = T)[2]
-
-    stat_table2[x] <- c(i, cor, cor_p, lower, upper)
     i <- i + 1
     x <- x + 1
 }
@@ -182,36 +149,6 @@ while (i < 10) {
     upperCI <- c(upperCI, stat_table[5, i])
     i <- i + 1
 }
-year <- c()
-i <- 2
-while (i < 20) {
-    year <- c(year, stat_table2[1, i])
-    i <- i + 1
-}
-cor_precip_dev <- c()
-i <- 2
-while (i < 20){
-    cor_precip_dev <- c(cor_precip_dev, stat_table2[2, i])
-    i <- i + 1
-}
-cor_precip_dev_p <- c()
-i <- 2
-while (i < 20) {
-    cor_precip_dev_p <- c(cor_precip_dev_p, stat_table2[3, i])
-    i <- i + 1
-}
-lowerCI_dev <- c()
-i <- 2
-while (i < 20) {
-    lowerCI_dev <- c(lowerCI_dev, stat_table2[4, i])
-    i <- i + 1
-}
-upperCI_dev <- c()
-i <- 2
-while (i < 20) {
-    upperCI_dev <- c(upperCI_dev, stat_table2[5, i])
-    i <- i + 1
-}
 
 stats <- data.frame(
     Month = month,
@@ -223,21 +160,6 @@ stats <- data.frame(
 )
 write.csv(
     stats,
-    "coleops_precip_cors.csv",
-    row.names = F
-)
-
-stats2 <- data.frame(
-    Year = year,
-    Cor_precip_dev = cor_precip_dev,
-    Cor_precip_dev_p = cor_precip_dev_p,
-    Cor_precip_dev_adj_p = p.adjust(cor_precip_dev_p, method = "holm", n = 18),
-    LowerCI = lowerCI_dev,
-    UpperCI = upperCI_dev
-)
-
-write.csv(
-    stats2,
     "coleops_precip_dev_cors.csv",
     row.names = F
 )

@@ -14,10 +14,8 @@ dev.off()
 x11(width = 5, height = 5)
 
 # import data.
-temp <- read.csv("coleops_temp_cors.csv")
-temp_dev <- read.csv("coleops_temp_dev_cors.csv")
-precip <- read.csv("coleops_precip_cors.csv")
-precip_dev <- read.csv("coleops_precip_dev_cors.csv")
+temp <- read.csv("coleops_temp_dev_cors.csv")
+precip <- read.csv("coleops_precip_dev_cors.csv")
 
 variable <- c(
         "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", 
@@ -37,27 +35,6 @@ table <- data.frame(
     UpperCI = c(temp$UpperCI, precip$UpperCI)
 )
 
-variable2 <- c(
-        "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", 
-        "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", 
-        "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", 
-        "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", 
-        "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", 
-        "Temperature Correlation Coefficients", "Temperature Correlation Coefficients", "Temperature Correlation Coefficients",
-        "Precipitation Correlation Coefficients", "Precipitation Correlation Coefficients", "Precipitation Correlation Coefficients", 
-        "Precipitation Correlation Coefficients", "Precipitation Correlation Coefficients", "Precipitation Correlation Coefficients", 
-        "Precipitation Correlation Coefficients", "Precipitation Correlation Coefficients", "Precipitation Correlation Coefficients", 
-        "Precipitation Correlation Coefficients", "Precipitation Correlation Coefficients", "Precipitation Correlation Coefficients", 
-        "Precipitation Correlation Coefficients", "Precipitation Correlation Coefficients", "Precipitation Correlation Coefficients", 
-        "Precipitation Correlation Coefficients", "Precipitation Correlation Coefficients", "Precipitation Correlation Coefficients")
-
-dev_table <- data.frame(
-    Variable = variable2,
-    Year = c(temp_dev$Year, precip_dev$Year),
-    Cors = c(temp_dev$Cor_temp_dev, precip_dev$Cor_precip_dev),
-    LowerCI = c(temp_dev$LowerCI, precip_dev$LowerCI),
-    UpperCI = c(temp_dev$UpperCI, precip_dev$UpperCI)
-)
 
 # temp precip plot
 
